@@ -458,7 +458,22 @@ button {
   background: var(--primary-color);
   padding: 0.5rem;
 }
-
+.post-form .form textarea {
+  background: 0 0;
+  border: 0;
+}
+.comment-form{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-shrink: 1;
+  align-items: center;
+}
+.btn-comment {
+  background-color: #fff;
+  color: var(--primary-color);
+}
 .post {
   display: grid;
   grid-template-columns: 1fr 4fr;

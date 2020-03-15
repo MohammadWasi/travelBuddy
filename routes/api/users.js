@@ -8,6 +8,8 @@ const { check, validationResult } = require('express-validator/check');
 
 const User = require('../../models/User');
 
+const Followers = require('../../models/Followers');
+
 // @route    POST api/users
 // @desc     Register user
 // @access   Public
@@ -52,12 +54,20 @@ router.post(
         avatar,
         password
       });
+      const newFollower =  new Followers({
+        user: req.user.id,
+        avatar: user.avatar,
+        followers: [],
+        following:[]
+      });
+       
 
       const salt = await bcrypt.genSalt(10);
 
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
+      await newFollower.save();
 
       const payload = {
         user: {
