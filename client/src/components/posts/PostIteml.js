@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { connect } from 'react-redux';
-import './post.css';
+import '../post/post.css';
 import postimg from '../../img/postimg1.jpg';
 import PropTypes from 'prop-types';
 import LikeBtn from '../../img/likeBtn.js.js';
 import CommentSvg from '../../img/commentSvg';
-import PostComment from './PostComment';
+import PostComment from '../post/PostComment';
 
 import { addLike, removeLike, deletePost } from '../../actions/post';
 
@@ -14,11 +14,18 @@ const Post = ({
   removeLike,
   deletePost,
   auth,
-  post: { _id, text, name, avatar, user, likes, comments, date },
+  post: { _id, text,imgUrl,name, avatar, liked, user, likes, comments, date },
+  likeInfo,
   showActions
 }) => {
-  console.log(addLike);
-
+  // const [like, setLike] = useState(false);
+  const isLiked = (id, user) => {
+    if (likeInfo[user].isLiked) {
+      removeLike(id, user);
+      return;
+    }
+    addLike(id, user);
+  }
     return (
     <div className="container-post">
       <div className="post-top">
@@ -27,11 +34,11 @@ const Post = ({
 </div>
 </div>
 <div className="card">
-  <img src={avatar} alt="Avatar" />
+  <img src={imgUrl} alt="Avatar" />
   <div className="post-content">
     <div className="post-action">
       <span className="like-btn"><button className="like-btn-btn">
-        <LikeBtn />
+        <LikeBtn fill={likeInfo[user].isLiked ? '#ed4956' : '#262626'} onClick={() => isLiked(_id, user)}/>
         </button></span>
       <span className="comment-icon">
         <button className="comment-btn">
@@ -39,7 +46,7 @@ const Post = ({
         </button>
       </span>
     </div>
-    <div className="likes-count">{likes} Likes</div>
+    <div className="likes-count"> {likeInfo[user].likeCount} Likes</div>
     <div className="caption">
     <p><b>{name}</b></p> 
     <p>{text}</p>
@@ -70,6 +77,11 @@ Post.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth
 });
+
+// const mapDispatchToProps = dispatch => {
+//   const 
+//   return { addLike, removeLike, deletePost }
+// }
 
 export default connect(
   mapStateToProps,

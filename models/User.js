@@ -20,6 +20,11 @@ const UserSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  userId: {
+    type: String,
+    required: true,
+    unique: true
   }
 });
 

@@ -6,11 +6,14 @@ import {
   ADD_POST,
   GET_POST,
   ADD_COMMENT,
-  REMOVE_COMMENT
+  REMOVE_COMMENT,
+  ADD_LIKE,
+  REMOVE_LIKE
 } from '../actions/types';
 
 const initialState = {
   posts: [],
+  likeInfo: {},
   post: null,
   loading: true,
   error: {}
@@ -18,7 +21,6 @@ const initialState = {
 
 export default function(state = initialState, action) {
   const { type, payload } = action;
-
   switch (type) {
     case GET_POSTS:
       return {
@@ -53,11 +55,31 @@ export default function(state = initialState, action) {
     case UPDATE_LIKES:
       return {
         ...state,
-        posts: state.posts.map(post =>
-          post._id === payload.id ? { ...post, likes: payload.likes } : post
-        ),
+        likeInfo: {...payload},
         loading: false
       };
+    case ADD_LIKE:
+      return {
+        ...state,
+        likeInfo: {
+          ...state.likeInfo,
+          [payload.id]: {
+            isLiked : true, likeCount: state.likeInfo[payload.id].likeCount + 1
+          }
+        },
+        loading: false
+      };
+    case REMOVE_LIKE:
+    return {
+      ...state,
+      likeInfo: {
+        ...state.likeInfo,
+        [payload.id]: {
+          isLiked : false, likeCount: state.likeInfo[payload.id].likeCount - 1
+        }
+      },
+      loading: false
+    };
     case ADD_COMMENT:
       return {
         ...state,

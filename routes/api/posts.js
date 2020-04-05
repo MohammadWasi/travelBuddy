@@ -52,7 +52,26 @@ router.post(
 router.get('/', auth, async (req, res) => {
   try {
     const posts = await Post.find().sort({ date: -1 });
-    res.json(posts);
+
+    const post = posts.map((post) => {
+    const isliked = post.likes.filter(like => like.user.toString() === req.user.id).length > 0;
+    const postData = {
+      _id: post._id,
+      caption: post.text,
+      name: post.name,
+      avatar: post.avatar,
+      user: post.user,
+      likes: post.likes.length,
+      comments: post.comments,
+      date: post.date,
+      liked: isliked,
+      imgUrl2:['https://images.unsplash.com/photo-1585810393186-da794f7ec877?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1868&q=80']
+      ,
+      imgUrl: 'https://images.unsplash.com/photo-1578103677890-f8f4b45222c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1860&q=80'
+    };
+    return postData;
+    });
+    res.json(post);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -70,8 +89,23 @@ router.get('/:id', auth, async (req, res) => {
     if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !post) {
       return res.status(404).json({ msg: 'Post not found' });
     }
+    const isliked = post.likes.filter(like => like.user.toString() === req.user.id).length > 0;
+    const postData = {
+      _id: post._id,
+      caption: post.text,
+      name: post.name,
+      avatar: post.avatar,
+      user: post.user,
+      likes: post.likes.length,
+      comments: comments,
+      date: date,
+      liked: isliked,
+      imgUrl2:['https://images.unsplash.com/photo-1585810393186-da794f7ec877?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1868&q=80']
+      ,
+      imgUrl: 'https://images.unsplash.com/photo-1578103677890-f8f4b45222c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1860&q=80'
+    };
 
-    res.json(post);
+    res.json(postData);
   } catch (err) {
     console.error(err.message);
 
@@ -123,7 +157,6 @@ router.put('/like/:id', auth, async (req, res) => {
     post.likes.unshift({ user: req.user.id });
 
     await post.save();
-
     res.json(post.likes);
   } catch (err) {
     console.error(err.message);

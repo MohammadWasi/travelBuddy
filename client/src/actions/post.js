@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { setAlert } from './alert';
+import createLikeInfo from '../utils/createLikeInfo';
+
 import {
   GET_POSTS,
   POST_ERROR,
@@ -8,13 +10,19 @@ import {
   ADD_POST,
   GET_POST,
   ADD_COMMENT,
-  REMOVE_COMMENT
+  REMOVE_COMMENT,
+  ADD_LIKE,
+  REMOVE_LIKE
 } from './types';
 
 // Get posts
 export const getPosts = () => async dispatch => {
   try {
     const res = await axios.get('/api/posts');
+    dispatch({
+      type: UPDATE_LIKES,
+      payload: createLikeInfo(res.data)
+    });
 
     dispatch({
       type: GET_POSTS,
@@ -29,13 +37,13 @@ export const getPosts = () => async dispatch => {
 };
 
 // Add like
-export const addLike = id => async dispatch => {
+export const addLike = (id, user) => async dispatch => {
   try {
-    const res = await axios.put(`/api/posts/like/${id}`);
+    await axios.put(`/api/posts/like/${id}`);
 
     dispatch({
-      type: UPDATE_LIKES,
-      payload: { id, likes: res.data }
+      type: ADD_LIKE,
+      payload: { id: user }
     });
   } catch (err) {
     dispatch({
@@ -46,13 +54,13 @@ export const addLike = id => async dispatch => {
 };
 
 // Remove like
-export const removeLike = id => async dispatch => {
+export const removeLike = (id, user) => async dispatch => {
   try {
-    const res = await axios.put(`/api/posts/unlike/${id}`);
+    await axios.put(`/api/posts/unlike/${id}`);
 
     dispatch({
-      type: UPDATE_LIKES,
-      payload: { id, likes: res.data }
+      type: REMOVE_LIKE,
+      payload:{ id: user }
     });
   } catch (err) {
     dispatch({

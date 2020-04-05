@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator/check');
+const  uuid   = require('uuid');
+
 
 const User = require('../../models/User');
 
@@ -52,13 +54,8 @@ router.post(
         name,
         email,
         avatar,
-        password
-      });
-      const newFollower =  new Followers({
-        user: req.user.id,
-        avatar: user.avatar,
-        followers: [],
-        following:[]
+        password,
+        userId: uuid.v4()
       });
        
 
@@ -67,8 +64,15 @@ router.post(
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
+      const newFollower =  new Followers({
+        user: user.id,
+        avatar: user.avatar,
+        followers: [],
+        following:[],
+        userId: user.userId
+      });
       await newFollower.save();
-
+      console.log(user._id == user.id);
       const payload = {
         user: {
           id: user.id
