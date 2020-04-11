@@ -14,11 +14,11 @@ const Post = ({
   removeLike,
   deletePost,
   auth,
-  post: { _id, text,imgUrl,name, avatar, liked, user, likes, comments, date },
+  post: { _id, caption,imgUrl,name, avatar, liked, user, likes, comments,date },
   likeInfo,
+  commentInfo,
   showActions
 }) => {
-  // const [like, setLike] = useState(false);
   const isLiked = (id, user) => {
     if (likeInfo[user].isLiked) {
       removeLike(id, user);
@@ -26,6 +26,7 @@ const Post = ({
     }
     addLike(id, user);
   }
+  const topComments = commentInfo[_id].comments;
     return (
     <div className="container-post">
       <div className="post-top">
@@ -49,11 +50,16 @@ const Post = ({
     <div className="likes-count"> {likeInfo[user].likeCount} Likes</div>
     <div className="caption">
     <p><b>{name}</b></p> 
-    <p>{text}</p>
+    <p>{caption}</p>
     </div>
-    <div className="view-comments"> view all 100 {comments} Comments</div>
-    <div className="view-comments">Timestamps</div>
-    <div className="add-comment"><PostComment /></div>
+    <div className="view-comments"> view all {comments.length} Comments</div>
+    {topComments.length > 0 ?  topComments.map((comment) => (
+    <div className="top-comments" key={comment._id}> {comment.name} &nbsp;&nbsp;<span>{comment.text}</span></div>
+
+    )) : ''}
+
+    <div className="post-timestamp">{date}</div>
+    <div className="add-comment"><PostComment postId={_id} /></div>
 
   </div>
 </div>

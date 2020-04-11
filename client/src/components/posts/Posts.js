@@ -6,7 +6,7 @@ import PostItem from './PostIteml';
 import PostForm from './PostForm';
 import { getPosts } from '../../actions/post';
 
-const Posts = ({ getPosts, post: { posts, likeInfo, loading } }) => {
+const Posts = ({ getPosts, post: { posts, likeInfo, commentInfo, loading } }) => {
   useEffect(() => {
     getPosts();
   }, [getPosts]);
@@ -22,7 +22,7 @@ const Posts = ({ getPosts, post: { posts, likeInfo, loading } }) => {
       <PostForm />
       <div className='posts'>
         {posts.map(post => (
-          <PostItem key={post._id} post={post} likeInfo={likeInfo} />
+          <PostItem key={post._id} post={post} likeInfo={likeInfo} commentInfo={commentInfo} />
         ))}
       </div>
     </Fragment>

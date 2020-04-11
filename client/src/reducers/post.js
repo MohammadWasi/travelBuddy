@@ -8,12 +8,14 @@ import {
   ADD_COMMENT,
   REMOVE_COMMENT,
   ADD_LIKE,
-  REMOVE_LIKE
+  REMOVE_LIKE,
+  GET_COMMENTS
 } from '../actions/types';
 
 const initialState = {
   posts: [],
   likeInfo: {},
+  commentInfo: {},
   post: null,
   loading: true,
   error: {}
@@ -80,10 +82,17 @@ export default function(state = initialState, action) {
       },
       loading: false
     };
-    case ADD_COMMENT:
+    case GET_COMMENTS:
       return {
         ...state,
-        post: { ...state.post, comments: payload },
+        commentInfo: {...payload}
+      }
+    case ADD_COMMENT:
+      console.log(state);
+      console.log(payload);
+      return {
+        ...state,
+        commentInfo: { ...state.commentInfo, [payload.id]: {comments: [...state.commentInfo[payload.id].comments, payload.data]} },
         loading: false
       };
     case REMOVE_COMMENT:

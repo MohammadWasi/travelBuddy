@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 import createLikeInfo from '../utils/createLikeInfo';
+import createCommentsInfo from '../utils/createCommentsInfo'
 
 import {
   GET_POSTS,
@@ -12,7 +13,8 @@ import {
   ADD_COMMENT,
   REMOVE_COMMENT,
   ADD_LIKE,
-  REMOVE_LIKE
+  REMOVE_LIKE,
+  GET_COMMENTS
 } from './types';
 
 // Get posts
@@ -23,7 +25,10 @@ export const getPosts = () => async dispatch => {
       type: UPDATE_LIKES,
       payload: createLikeInfo(res.data)
     });
-
+    dispatch({
+      type: GET_COMMENTS,
+      payload: createCommentsInfo(res.data)
+    });
     dispatch({
       type: GET_POSTS,
       payload: res.data
@@ -145,10 +150,13 @@ export const addComment = (postId, formData) => async dispatch => {
       formData,
       config
     );
-
+  // dispatch({
+  //     type: GET_POST,
+  //     payload: res.data
+  //   });
     dispatch({
       type: ADD_COMMENT,
-      payload: res.data
+      payload: { id: postId, data: res.data }
     });
 
     dispatch(setAlert('Comment Added', 'success'));

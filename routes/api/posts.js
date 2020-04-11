@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 const auth = require('../../middleware/auth');
-
+const formatDate  = require('../../utils/dateFormater');
 const Post = require('../../models/Post');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
@@ -55,6 +55,8 @@ router.get('/', auth, async (req, res) => {
 
     const post = posts.map((post) => {
     const isliked = post.likes.filter(like => like.user.toString() === req.user.id).length > 0;
+    const commentsByuser = post.comments.filter(comment => comment.user.toString() === req.user.id);
+    const topComments = [...commentsByuser];
     const postData = {
       _id: post._id,
       caption: post.text,
@@ -63,7 +65,8 @@ router.get('/', auth, async (req, res) => {
       user: post.user,
       likes: post.likes.length,
       comments: post.comments,
-      date: post.date,
+      topComments: topComments.slice(0,3),
+      date: formatDate(post.date),
       liked: isliked,
       imgUrl2:['https://images.unsplash.com/photo-1585810393186-da794f7ec877?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1868&q=80']
       ,
@@ -229,7 +232,7 @@ router.post(
 
       await post.save();
 
-      res.json(post.comments);
+      res.json(post.comments[0]);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');

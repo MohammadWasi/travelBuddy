@@ -50,3 +50,18 @@
     background: 0 0 !important;
     border: 0;
   }
+  .top-comments {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    text-overflow: ellipsis;
+  }
+  .top-comments span {
+   font-weight: lighter;
+  }
+.post-timestamp{
+  font-size: 8px;
+  text-transform: uppercase;
+  color: #333;
+  font-weight: bolder;
+}
