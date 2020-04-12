@@ -150,10 +150,6 @@ export const addComment = (postId, formData) => async dispatch => {
       formData,
       config
     );
-  // dispatch({
-  //     type: GET_POST,
-  //     payload: res.data
-  //   });
     dispatch({
       type: ADD_COMMENT,
       payload: { id: postId, data: res.data }

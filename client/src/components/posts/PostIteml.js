@@ -1,7 +1,6 @@
 import React, { Component, useState } from 'react'
 import { connect } from 'react-redux';
 import '../post/post.css';
-import postimg from '../../img/postimg1.jpg';
 import PropTypes from 'prop-types';
 import LikeBtn from '../../img/likeBtn.js.js';
 import CommentSvg from '../../img/commentSvg';
