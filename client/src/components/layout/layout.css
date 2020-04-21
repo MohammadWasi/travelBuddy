@@ -1,0 +1,15 @@
+.stick-bar-container {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    background-color: #fff;
+    bottom: 0;
+    height: 50px;
+    z-index: 10;
+    top: auto;
+    right: 0;
+    left: 0;
+    border: 0;
+    justify-content: space-evenly;
+    align-items: center;
+}

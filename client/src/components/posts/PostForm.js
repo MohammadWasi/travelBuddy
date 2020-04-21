@@ -5,6 +5,10 @@ import { addPost } from '../../actions/post';
 
 const PostForm = ({ addPost }) => {
   const [text, setText] = useState('');
+  const [file, setFile] = useState('');
+  const onChange = (e) => {
+    setFile(e.target.file[0]);
+ }
 
   return (
     <div className='post-form'>
@@ -15,7 +19,7 @@ const PostForm = ({ addPost }) => {
         className='form my-1'
         onSubmit={e => {
           e.preventDefault();
-          addPost({ text });
+          addPost({ text, file });
           setText('');
         }}
       >
@@ -28,6 +32,14 @@ const PostForm = ({ addPost }) => {
           onChange={e => setText(e.target.value)}
           required
         />
+        <div className="add-photo">
+        <input
+            type='file'
+            className='custom-file-input'
+            id='customFile'
+            onChange={onChange}
+          />
+          </div>
         <input type='submit' className='btn btn-dark my-1' value='Submit' />
       </form>
     </div>
