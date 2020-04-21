@@ -12,7 +12,7 @@ const Landing = ({ isAuthenticated }) => {
     <section className='landing'>
       <div className='dark-overlay'>
         <div className='landing-inner'>
-          <h1 className='x-large'>Travellers Connector</h1>
+          <h1 className='x-large'>Travel Buddy</h1>
           <p className='lead'>
             Connect with travellers around the world.
           </p>
